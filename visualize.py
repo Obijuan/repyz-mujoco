@@ -20,6 +20,7 @@
 #
 
 
+
 import mujoco
 import mujoco.viewer
 import time
@@ -151,7 +152,7 @@ def main():
             return
             
         server = viser.ViserServer()
-        server.gui.configure_theme(dark_mode=True)
+        server.gui.configure_theme(dark_mode=False)
         scene = ViserMujocoScene(server, model, num_envs=1)
         scene.create_visualization_gui()
 

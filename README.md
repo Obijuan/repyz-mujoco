@@ -39,7 +39,7 @@ To launch the classic MuJoCo interactive environment with the assembled model, r
 python3 visualize.py
 ```
 
-If you experience slowness (especially through VNC) or prefer to visualize the robot in a browser tab without lag, you can launch the Viser web server:
+If you experience slowness (especially through VNC) or you have issues with the graphic environment or prefer to visualize the robot in a browser tab without lag, you can launch the Viser web server:
 
 ```bash
 python3 visualize.py --viewer viser
