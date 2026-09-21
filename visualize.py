@@ -20,7 +20,6 @@
 #
 
 
-
 import mujoco
 import mujoco.viewer
 import time
@@ -35,7 +34,7 @@ def main():
     args = parser.parse_args()
 
     # Load the model
-    model = mujoco.MjModel.from_xml_path("assets/minicube_repyz.xml")
+    model = mujoco.MjModel.from_xml_path("assets/minicube_1_repyz.xml")
     data = mujoco.MjData(model)
 
     print("Starting MuJoCo simulator...")
@@ -75,20 +74,30 @@ def main():
         time_per_render = 1.0 / render_fps
         last_render_time = time.time()
         actuator_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, "servo_actuator")
+        actuator_id2 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, "servo_actuator2")
         
         # Helper to check if viewer is running
         is_running = getattr(viewer, 'is_running', lambda: True)
 
         while is_running():
             step_start = time.time()
-            
-            
+
+            # -- Parameters common to both modules
+            offset = 0
+            amplitude = 0.8
+            frequency = 1.0
+
+            # -- Move the first module
             if actuator_id != -1:
-                amplitude = 1.0
-                frequency = 1.0
-                val = amplitude * math.sin(2 * math.pi * frequency * data.time)
+                val = amplitude * math.sin(2 * math.pi * frequency * data.time) + offset
                 data.ctrl[actuator_id] = val
                 history.append(float(val))
+
+            # -- Move the 2nd module
+            if actuator_id2 != -1:
+                frequency = 1.0
+                val2 = amplitude * math.sin(2 * math.pi * frequency * data.time - 2*math.pi/3) + offset
+                data.ctrl[actuator_id2] = val2
             
             mujoco.mj_step(model, data)
             
